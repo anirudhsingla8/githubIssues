@@ -1,5 +1,7 @@
 import React,{Component} from "react";
 import axios from 'axios';
+import ResultComponent from "./ResultComponent";
+
 class InputComponent extends Component{
     constructor() {
         super()
@@ -7,8 +9,6 @@ class InputComponent extends Component{
         this.state = {
             owner : "",
             repo : "",
-            items: [],
-
         }
     }
 
@@ -26,19 +26,7 @@ class InputComponent extends Component{
         })
     }
 
-    apiFetch = () => {
-        axios.get(`https://api.github.com/repos/${this.state.owner}/${this.state.repo}/issues`)
-            .then(response => {
-                console.log(response)
-                this.setState({
-                    items:response.data,
 
-                })
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
 
 
     render(){
@@ -49,17 +37,11 @@ class InputComponent extends Component{
                 <p>The current Owner is {this.state.owner} and the current Repo is {this.state.repo}</p>
                 <input type='text' onChange={this.ownerName} value={this.state.owner} placeholder='Enter Username' className='inputFields'/>
                 <br/>
-                <input type='text' onChange={this.repoName} value={this.state.repo} placeholder='enter Repository' className='inputFields'/>
+                <input type='text' onChange={this.repoName} value={this.state.repo} placeholder='Enter Repository' className='inputFields'/>
                 <br/>
-                <button onClick={this.apiFetch}>Fetch Results</button>
-                <ul>
-                    {items.map(item=>(
-                        <li key={item.id}>
-                           Issue-title: {item.title}
-                        </li>
-                        )
-                    )}
-                </ul>
+                <br/>
+                <ResultComponent {...this.state} />
+
             </div>
         );
     }
